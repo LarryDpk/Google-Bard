@@ -16,7 +16,7 @@ It's quite easy to use:
 Import the Lib(Before Pushing to repository, you need to build the jar locally):
 ```xml
 <dependency>
-    <groupId>com.pkslow.ai</groupId>
+    <groupId>com.pkslow</groupId>
     <artifactId>google-bard</artifactId>
     <version>0.0.1</version>
 </dependency>
@@ -35,10 +35,10 @@ We just need the token show as below:
 ```java
 for (int i = 0; i < answers.size(); i++) {
     if (i == 0) {
-        System.out.println("## Recommended Answer");
+        System.out.println("### Recommended Answer");
         System.out.println(answers.get(i));
     } else {
-        System.out.println("## Answer " + i);
+        System.out.println("### Answer " + i);
         System.out.println(answers.get(i));
     }
 }
