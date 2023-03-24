@@ -69,9 +69,12 @@ public class GoogleBardClient implements AIClient {
         Call call = client.newCall(request);
         try {
             Response response = call.execute();
-            System.out.println("Response code: " + response.code());
-
+            int statusCode = response.code();
+            System.out.println("Response code: " + statusCode);
             String responseString = Objects.requireNonNull(response.body()).string();
+            if(statusCode != 200) {
+                throw new IllegalStateException("Can't get the answer");
+            }
             String result = responseString.split("\\n")[3];
             return result;
         } catch (IOException e) {

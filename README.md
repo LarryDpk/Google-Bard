@@ -13,12 +13,12 @@ mvn clean install
 
 It's quite easy to use:
 
-Import the Lib(Before Pushing to repository, you need to build the jar locally):
+Import the Lib:
 ```xml
 <dependency>
     <groupId>com.pkslow</groupId>
     <artifactId>google-bard</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
 
