@@ -1,19 +1,15 @@
-# Google-Bard
-A Java Lib for Google-Bard.
 
-This is a Java lib that can ask questions to `Google-Bard` and get back the answers.
+# Java Library for Google Bard to Ask Questions and Receive Answers
 
-## How to build
+`Google Bard` is Google's experimental, conversational, AI chat service. It is meant to function similarly to ChatGPT, with the biggest difference being that Google's service will pull its information from the web.
 
-```bash
-mvn clean install
-```
+I want to use `Google Bard` automatically in a easier way, so I built a Java library for it. The GitHub Link is: https://github.com/LarryDpk/Google-Bard
 
-## How to use
 
-It's quite easy to use:
+## How to use the library
+(1) Import the library into your project
 
-Import the Lib:
+For maven project:
 ```xml
 <dependencies>
     <dependency>
@@ -24,15 +20,19 @@ Import the Lib:
 </dependencies>
 ```
 
+## Get the token from browser
+We need to get the token from browser for authentication. It a cookie named `__Secure-1PSID`, and we need to copy the value.
+![](https://pkslow.oss-cn-shenzhen.aliyuncs.com/images/2023/03/google-bard-python-chatbot.sessionid.png)
+
+## Java Code
+It's easy to make the call:
 ```java
 AIClient client = new GoogleBardClient(token);
 List<String> answers = client.ask("How to be a good father?");
 ```
 
-We just need the token show as below:
-![](how-to-get-token.png)
-
-`Google Bard` will give us 3 answers. The chosen/recommended answer is the first one.
+If `Google Bard` can answer the question, it will return 3 answers.
+The chosen/recommended answer is the first one.
 
 ```java
 for (int i = 0; i < answers.size(); i++) {
@@ -45,6 +45,12 @@ for (int i = 0; i < answers.size(); i++) {
     }
 }
 ```
+
+`Google Bard` is now under development, it's just available in US/UK, so you may set the proxy before you run the application:
+```java
+NetworkUtils.setUpProxy("localhost", "7890");
+```
+
 
 ## The answers Example
 It `Markdown` format for the answer, you can see the answers I got:
@@ -93,3 +99,4 @@ Here are some tips on how to be a good father:
 * **Be there for your child.** Your child needs to know that you are there for them, no matter what. Be supportive and loving, and let them know that you will always be there for them.
 
 Being a good father is one of the most important things you can do in life. By following these tips, you can help your child grow into a happy, healthy, and successful adult.
+

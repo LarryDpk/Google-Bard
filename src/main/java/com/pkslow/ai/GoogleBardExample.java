@@ -2,12 +2,12 @@ package com.pkslow.ai;
 
 import java.util.List;
 
-public class GoogleBardMain {
+public class GoogleBardExample {
     public static void main(String[] args) {
         NetworkUtils.setUpProxy("localhost", "7890");
-        String token = "UgiXYPjpaIYuE9K_3BSqCWnT2WIqxxxxxxxx.";
+        String token = args[0];
         AIClient client = new GoogleBardClient(token);
-        List<String> answers = client.ask("what is pkslow.com?");
+        List<String> answers = client.ask("How to be a good father?");
 
         for (int i = 0; i < answers.size(); i++) {
             if (i == 0) {
