@@ -15,7 +15,7 @@ For maven project:
     <dependency>
         <groupId>com.pkslow</groupId>
         <artifactId>google-bard</artifactId>
-        <version>0.0.1</version>
+        <version>0.0.2-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
@@ -28,20 +28,19 @@ We need to get the token from browser for authentication. It a cookie named `__S
 It's easy to make the call:
 ```java
 AIClient client = new GoogleBardClient(token);
-List<String> answers = client.ask("How to be a good father?");
+Answer answer = client.ask("how to be a good father?");
 ```
 
 If `Google Bard` can answer the question, it will return 3 answers.
 The chosen/recommended answer is the first one.
 
 ```java
-for (int i = 0; i < answers.size(); i++) {
-    if (i == 0) {
-        System.out.println("### Recommended Answer");
-        System.out.println(answers.get(i));
-    } else {
-        System.out.println("### Answer " + i);
-        System.out.println(answers.get(i));
+if (answer.status() == AnswerStatus.OK) {
+    System.out.println("### Chosen Answer");
+    System.out.println(answer.chosenAnswer());
+    for (int i = 0; i < answer.draftAnswers().size(); i++) {
+        System.out.println("### Draft Answer " + i);
+        System.out.println(answer.draftAnswers().get(i));
     }
 }
 ```
@@ -55,7 +54,7 @@ NetworkUtils.setUpProxy("localhost", "7890");
 ## The answers Example
 It `Markdown` format for the answer, you can see the answers I got:
 
-### Recommended Answer
+### Chosen Answer
 Here are some tips on how to be a good father:
 
 * **Spend time with your child.** Quality time is essential for building a strong relationship with your child. Make time for activities that you both enjoy, such as playing games, going to the park, or reading stories.
@@ -66,7 +65,7 @@ Here are some tips on how to be a good father:
 * **Be loving.** The most important thing a father can do is to love his child unconditionally. Let your child know that you love them every day.
 
 Being a good father is a lifelong journey. There is no one right way to do it. Just remember to be there for your child, be a good role model, and show them love.
-### Answer 1
+### Draft Answer 0
 Here are some tips on how to be a good father:
 
 * **Spend time with your child.** Quality time is essential for building a strong relationship with your child. Make time for activities that you both enjoy, such as playing games, going to the park, or reading stories.
@@ -77,7 +76,7 @@ Here are some tips on how to be a good father:
 * **Be loving.** The most important thing a father can do is to love his child unconditionally. Let your child know that you love them every day.
 
 Being a good father is a lifelong journey. There is no one right way to do it. Just remember to be there for your child, be a good role model, and show them love.
-### Answer 2
+### Draft Answer 1
 Here are some tips on how to be a good father:
 
 * **Spend time with your children.** Make time for them, even if it's just for a few minutes each day. Talk to them, listen to them, and play with them.
@@ -88,7 +87,7 @@ Here are some tips on how to be a good father:
 * **Be there for your children, no matter what.** Love them unconditionally and support them through thick and thin.
 
 Being a good father is a lifelong journey. There will be times when you make mistakes, but that's okay. The important thing is to learn from your mistakes and keep trying to be the best father you can be.
-### Answer 3
+### Draft Answer 2
 Here are some tips on how to be a good father:
 
 * **Spend time with your child.** This is one of the most important things you can do as a father. Make time for your child every day, even if it's just for a few minutes. Play with them, read to them, or just talk to them.

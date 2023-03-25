@@ -23,14 +23,23 @@ public class GoogleBardClient implements AIClient {
     }
 
     @Override
-    public List<String> ask(String question) {
-        String strSNlM0e = getSNlM0e();
-        String response = ask(strSNlM0e, question);
-        return processAskResult(response);
+    public Answer ask(String question) {
+        Answer answer = null;
+        try {
+            String strSNlM0e = getSNlM0e();
+            String response = ask(strSNlM0e, question);
+            answer = processAskResult(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Answer.AnswerBuilder builder = Answer.AnswerBuilder.anAnswer();
+            return builder.status(AnswerStatus.ERROR).build();
+        }
+
+        return answer;
     }
 
 
-    private List<String> processAskResult(String content) {
+    private Answer processAskResult(String content) {
         JsonArray jsonArray = new Gson().fromJson(content, JsonArray.class);
         JsonElement object = ((JsonArray) jsonArray.get(0)).get(2);
         content = object.getAsString();
@@ -41,23 +50,27 @@ public class GoogleBardClient implements AIClient {
 
         String rr = ((JsonArray) jsonArray.get(0)).get(0).getAsString();
         rr = resultRender(rr);
-        results.add(rr);
+
+        Answer.AnswerBuilder builder = Answer.AnswerBuilder.anAnswer();
+
+        builder.chosenAnswer(rr);
 
         try {
-            for (int i = 1; i < 3; i++) {
+            for (int i = 0; i < 3; i++) {
                 String oneResult = ((JsonArray) ((JsonArray) jsonArray.get(4)).get(i)).get(1).getAsString();
                 oneResult = resultRender(oneResult);
                 results.add(oneResult);
             }
         } catch (Exception e) {
             System.out.println("No right answer...");
-            results.add("No right answer...");
-            results.add("No right answer...");
-            results.add("No right answer...");
+            builder.status(AnswerStatus.NO_ANSWER);
+            return builder.build();
+
         }
+        builder.draftAnswers(results);
+        builder.status(AnswerStatus.OK);
 
-
-        return results;
+        return builder.build();
     }
 
     private static String resultRender(String content) {
@@ -68,7 +81,7 @@ public class GoogleBardClient implements AIClient {
 
     private String ask(String strSNlM0e, String question) {
         OkHttpClient client = new OkHttpClient.Builder()
-                .callTimeout(120, TimeUnit.SECONDS)
+                .callTimeout(240, TimeUnit.SECONDS)
                 .build();
 
         Request request = postRequestForAsk(strSNlM0e, question);
