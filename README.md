@@ -15,19 +15,11 @@ It's quite easy to use:
 
 Import the Lib:
 ```xml
-<repositories>
-    <repository>
-        <id>ossrh</id>
-        <name>sonatype</name>
-        <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-    </repository>
-</repositories>
-
 <dependencies>
     <dependency>
         <groupId>com.pkslow</groupId>
         <artifactId>google-bard</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </dependency>
 </dependencies>
 ```
