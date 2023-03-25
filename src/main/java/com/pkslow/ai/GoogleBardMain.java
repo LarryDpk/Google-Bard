@@ -5,9 +5,9 @@ import java.util.List;
 public class GoogleBardMain {
     public static void main(String[] args) {
         NetworkUtils.setUpProxy("localhost", "7890");
-        String token = "UgiXYPjpaIYuE9K_xxxxxxxxxxxxxxxxxxxxxxxxxx";
+        String token = "UgiXYPjpaIYuE9K_3BSqCWnT2WIqxxxxxxxx.";
         AIClient client = new GoogleBardClient(token);
-        List<String> answers = client.ask("How to be a good father?");
+        List<String> answers = client.ask("what is pkslow.com?");
 
         for (int i = 0; i < answers.size(); i++) {
             if (i == 0) {

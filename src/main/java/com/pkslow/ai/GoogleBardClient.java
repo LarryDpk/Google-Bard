@@ -43,14 +43,21 @@ public class GoogleBardClient implements AIClient {
         rr = resultRender(rr);
         results.add(rr);
 
-        for (int i = 1; i < 3; i++) {
-            String oneResult = ((JsonArray) ((JsonArray) jsonArray.get(4)).get(i)).get(1).getAsString();
-            oneResult = resultRender(oneResult);
-            results.add(oneResult);
+        try {
+            for (int i = 1; i < 3; i++) {
+                String oneResult = ((JsonArray) ((JsonArray) jsonArray.get(4)).get(i)).get(1).getAsString();
+                oneResult = resultRender(oneResult);
+                results.add(oneResult);
+            }
+        } catch (Exception e) {
+            System.out.println("No right answer...");
+            results.add("No right answer...");
+            results.add("No right answer...");
+            results.add("No right answer...");
         }
 
-        return results;
 
+        return results;
     }
 
     private static String resultRender(String content) {
