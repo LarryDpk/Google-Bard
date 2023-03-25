@@ -29,7 +29,7 @@ public class GoogleBardClient implements AIClient {
             String strSNlM0e = getSNlM0e();
             String response = ask(strSNlM0e, question);
             answer = processAskResult(response);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             Answer.AnswerBuilder builder = Answer.AnswerBuilder.anAnswer();
             return builder.status(AnswerStatus.ERROR).build();
@@ -41,25 +41,26 @@ public class GoogleBardClient implements AIClient {
 
     private Answer processAskResult(String content) {
         JsonArray jsonArray = new Gson().fromJson(content, JsonArray.class);
-        JsonElement object = ((JsonArray) jsonArray.get(0)).get(2);
-        content = object.getAsString();
 
-        jsonArray = new Gson().fromJson(content, JsonArray.class);
+        JsonElement element3 = ((JsonArray) jsonArray.get(0)).get(2);
+        String content3 = element3.getAsString();
+
+        JsonArray jsonArray3 = new Gson().fromJson(content3, JsonArray.class);
 
         List<String> results = new ArrayList<>();
 
-        String rr = ((JsonArray) jsonArray.get(0)).get(0).getAsString();
-        rr = resultRender(rr);
+        String chosenAnswer = ((JsonArray) jsonArray3.get(0)).get(0).getAsString();
+        chosenAnswer = resultRender(chosenAnswer);
 
         Answer.AnswerBuilder builder = Answer.AnswerBuilder.anAnswer();
 
-        builder.chosenAnswer(rr);
+        builder.chosenAnswer(chosenAnswer);
 
         try {
             for (int i = 0; i < 3; i++) {
-                String oneResult = ((JsonArray) ((JsonArray) jsonArray.get(4)).get(i)).get(1).getAsString();
-                oneResult = resultRender(oneResult);
-                results.add(oneResult);
+                String oneDraftAnswer = ((JsonArray) ((JsonArray) jsonArray3.get(4)).get(i)).get(1).getAsString();
+                oneDraftAnswer = resultRender(oneDraftAnswer);
+                results.add(oneDraftAnswer);
             }
         } catch (Exception e) {
             System.out.println("No right answer...");
@@ -73,15 +74,15 @@ public class GoogleBardClient implements AIClient {
         return builder.build();
     }
 
-    private static String resultRender(String content) {
-        content = content.replace("\\\\n", "\n");
-        content = content.replace("\\", "\"");
-        return content;
+    private static String resultRender(String answerStr) {
+        answerStr = answerStr.replace("\\\\n", "\n");
+        answerStr = answerStr.replace("\\", "\"");
+        return answerStr;
     }
 
     private String ask(String strSNlM0e, String question) {
         OkHttpClient client = new OkHttpClient.Builder()
-                .callTimeout(240, TimeUnit.SECONDS)
+                .callTimeout(5, TimeUnit.MINUTES)
                 .build();
 
         Request request = postRequestForAsk(strSNlM0e, question);
@@ -90,7 +91,7 @@ public class GoogleBardClient implements AIClient {
         try {
             Response response = call.execute();
             int statusCode = response.code();
-            System.out.println("Response code: " + statusCode);
+            System.out.println("Ask Response code: " + statusCode);
             String responseString = Objects.requireNonNull(response.body()).string();
             if(statusCode != 200) {
                 throw new IllegalStateException("Can't get the answer");
@@ -153,7 +154,7 @@ public class GoogleBardClient implements AIClient {
         Call call = client.newCall(requestForSNlM0e());
         try {
             Response response = call.execute();
-            System.out.println("Response code: " + response.code());
+            System.out.println("getSNlM0e Response code: " + response.code());
 
             String responseString = Objects.requireNonNull(response.body()).string();
             return regexSNlM0e(responseString);
@@ -175,9 +176,7 @@ public class GoogleBardClient implements AIClient {
         Matcher m = p.matcher(input);
         while (m.find()) {
             String result = m.group();
-            System.out.println(result);
             result = result.substring(9, result.length() - 1);
-            System.out.println(result);
             return result;
         }
         return null;
