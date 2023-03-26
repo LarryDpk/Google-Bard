@@ -3,6 +3,7 @@ package com.pkslow.ai;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,6 +16,7 @@ import java.util.regex.Pattern;
 
 import static com.pkslow.ai.Constants.*;
 
+@Slf4j
 public class GoogleBardClient implements AIClient {
     private final String token;
 
@@ -63,7 +65,7 @@ public class GoogleBardClient implements AIClient {
                 results.add(oneDraftAnswer);
             }
         } catch (Exception e) {
-            System.out.println("No right answer...");
+            log.error("No right answer...");
             builder.status(AnswerStatus.NO_ANSWER);
             return builder.build();
 
@@ -91,7 +93,7 @@ public class GoogleBardClient implements AIClient {
         try {
             Response response = call.execute();
             int statusCode = response.code();
-            System.out.println("Ask Response code: " + statusCode);
+            log.info("Ask Response code: " + statusCode);
             String responseString = Objects.requireNonNull(response.body()).string();
             if(statusCode != 200) {
                 throw new IllegalStateException("Can't get the answer");
@@ -154,7 +156,7 @@ public class GoogleBardClient implements AIClient {
         Call call = client.newCall(requestForSNlM0e());
         try {
             Response response = call.execute();
-            System.out.println("getSNlM0e Response code: " + response.code());
+            log.info("getSNlM0e Response code: " + response.code());
 
             String responseString = Objects.requireNonNull(response.body()).string();
             return regexSNlM0e(responseString);
