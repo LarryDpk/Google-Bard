@@ -10,10 +10,8 @@ public class GoogleBardExample {
     public static void main(String[] args) {
         NetworkUtils.setUpProxy("localhost", "7890");
         String token = args[0];
-        AIClient client = GoogleBardClient.Builder.newBuilder()
-                .token(token)
-                .timeout(Duration.ofMinutes(10))
-                .build();
+        AIClient client = new GoogleBardClient(token, Duration.ofMinutes(10));
+
         Answer answer = client.ask("how to be a good father?");
 
         StringBuilder sb = new StringBuilder();

@@ -15,7 +15,7 @@ For maven project:
     <dependency>
         <groupId>com.pkslow</groupId>
         <artifactId>google-bard</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.3-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
@@ -30,6 +30,15 @@ It's easy to make the call:
 AIClient client = new GoogleBardClient(token);
 Answer answer = client.ask("how to be a good father?");
 ```
+
+Now we have two ways to create a GoogleBardClient object, we can set the timeout for the http call:
+```java
+AIClient client = new GoogleBardClient(token);
+// or
+AIClient client = new GoogleBardClient(token, Duration.ofMinutes(10));
+```
+
+
 
 If `Google Bard` can answer the question, it will return 3 answers.
 The chosen/recommended answer is the first one.

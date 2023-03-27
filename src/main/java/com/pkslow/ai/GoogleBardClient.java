@@ -198,33 +198,4 @@ public class GoogleBardClient implements AIClient {
                 .addHeader("Cookie", TOKEN_COOKIE_NAME + "=" + token);
     }
 
-
-    public static final class Builder {
-        private String token;
-        private Duration timeout = Duration.ofMinutes(5);
-
-        private Builder() {
-        }
-
-        public static Builder newBuilder() {
-            return new Builder();
-        }
-
-        public Builder token(String token) {
-            this.token = token;
-            return this;
-        }
-
-        public Builder timeout(Duration timeout) {
-            this.timeout = timeout;
-            return this;
-        }
-
-        public GoogleBardClient build() {
-            if (token == null) {
-                throw new RuntimeException("Token must not be null");
-            }
-            return new GoogleBardClient(token, timeout);
-        }
-    }
 }
