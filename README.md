@@ -15,7 +15,7 @@ For maven project:
     <dependency>
         <groupId>com.pkslow</groupId>
         <artifactId>google-bard</artifactId>
-        <version>0.0.3-SNAPSHOT</version>
+        <version>0.0.3</version>
     </dependency>
 </dependencies>
 ```
