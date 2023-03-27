@@ -3,12 +3,17 @@ package com.pkslow.ai;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.Duration;
+
 @Slf4j
 public class GoogleBardExample {
     public static void main(String[] args) {
         NetworkUtils.setUpProxy("localhost", "7890");
         String token = args[0];
-        AIClient client = new GoogleBardClient(token);
+        AIClient client = GoogleBardClient.Builder.newBuilder()
+                .token(token)
+                .timeout(Duration.ofMinutes(10))
+                .build();
         Answer answer = client.ask("how to be a good father?");
 
         StringBuilder sb = new StringBuilder();

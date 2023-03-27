@@ -8,25 +8,34 @@ import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.pkslow.ai.Constants.*;
+import static com.pkslow.ai.WebUtils.okHttpClientWithTimeout;
 
 @Slf4j
 public class GoogleBardClient implements AIClient {
     private final String token;
 
+    private final OkHttpClient client;
+
     public GoogleBardClient(String token) {
-        this.token = token;
+        this(token, Duration.ofMinutes(5));
     }
+
+    public GoogleBardClient(String token, Duration timeout) {
+        this.token = token;
+        this.client = okHttpClientWithTimeout(timeout);
+    }
+
 
     @Override
     public Answer ask(String question) {
-        Answer answer = null;
+        Answer answer;
         try {
             String strSNlM0e = getSNlM0e();
             String response = ask(strSNlM0e, question);
@@ -83,23 +92,22 @@ public class GoogleBardClient implements AIClient {
     }
 
     private String ask(String strSNlM0e, String question) {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .callTimeout(5, TimeUnit.MINUTES)
-                .build();
-
         Request request = postRequestForAsk(strSNlM0e, question);
 
-        Call call = client.newCall(request);
+        Call call = this.client.newCall(request);
         try {
-            Response response = call.execute();
-            int statusCode = response.code();
-            log.info("Ask Response code: " + statusCode);
-            String responseString = Objects.requireNonNull(response.body()).string();
-            if(statusCode != 200) {
-                throw new IllegalStateException("Can't get the answer");
+            try (Response response = call.execute()) {
+                int statusCode = response.code();
+                log.info("Ask Response code: " + statusCode);
+                String responseString = Objects.requireNonNull(response.body()).string();
+                if (statusCode != 200) {
+                    throw new IllegalStateException("Can't get the answer");
+                }
+                String result = responseString.split("\\n")[3];
+                log.debug("Raw answers length: {}", result.length());
+//            log.debug("Result from Bard: {}", result);
+                return result;
             }
-            String result = responseString.split("\\n")[3];
-            return result;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -111,16 +119,15 @@ public class GoogleBardClient implements AIClient {
         HttpUrl.Builder httpBuilder = httpBuilderForAsk();
         RequestBody body = requestBodyForAsk(strSNlM0e, question);
         Request.Builder headerBuilder = builderWithHeader();
-        Request request = headerBuilder.url(httpBuilder.build())
+        return headerBuilder.url(httpBuilder.build())
                 .method("POST", body)
                 .build();
-        return request;
     }
 
     @NotNull
     private static HttpUrl.Builder httpBuilderForAsk() {
         Map<String, String> params = paramsForAsk();
-        HttpUrl.Builder httpBuilder = HttpUrl.parse(BASE_URL + ASK_QUESTION_PATH).newBuilder();
+        HttpUrl.Builder httpBuilder = Objects.requireNonNull(HttpUrl.parse(BASE_URL + ASK_QUESTION_PATH)).newBuilder();
         for (Map.Entry<String, String> param : params.entrySet()) {
             httpBuilder.addQueryParameter(param.getKey(), param.getValue());
         }
@@ -129,11 +136,10 @@ public class GoogleBardClient implements AIClient {
 
     @NotNull
     private static RequestBody requestBodyForAsk(String strSNlM0e, String question) {
-        RequestBody body = new FormBody.Builder()
+        return new FormBody.Builder()
                 .add("f.req", "[null,\"[[\\\"" + question + "\\\"],null,[\\\"\\\",\\\"\\\",\\\"\\\"]]\"]")
                 .add("at", strSNlM0e)
                 .build();
-        return body;
     }
 
     @NotNull
@@ -150,16 +156,13 @@ public class GoogleBardClient implements AIClient {
 
 
     private String getSNlM0e() {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .callTimeout(120, TimeUnit.SECONDS)
-                .build();
-        Call call = client.newCall(requestForSNlM0e());
+        Call call = this.client.newCall(requestForSNlM0e());
         try {
-            Response response = call.execute();
-            log.info("getSNlM0e Response code: " + response.code());
-
-            String responseString = Objects.requireNonNull(response.body()).string();
-            return regexSNlM0e(responseString);
+            try (Response response = call.execute()) {
+                log.info("getSNlM0e Response code: " + response.code());
+                String responseString = Objects.requireNonNull(response.body()).string();
+                return regexSNlM0e(responseString);
+            }
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -176,7 +179,7 @@ public class GoogleBardClient implements AIClient {
     private static String regexSNlM0e(String input) {
         Pattern p = Pattern.compile("SNlM0e\":\"(.*?)\"");
         Matcher m = p.matcher(input);
-        while (m.find()) {
+        if (m.find()) {
             String result = m.group();
             result = result.substring(9, result.length() - 1);
             return result;
@@ -193,5 +196,35 @@ public class GoogleBardClient implements AIClient {
                 .addHeader("Origin", BASE_URL)
                 .addHeader("Referer", BASE_URL)
                 .addHeader("Cookie", TOKEN_COOKIE_NAME + "=" + token);
+    }
+
+
+    public static final class Builder {
+        private String token;
+        private Duration timeout = Duration.ofMinutes(5);
+
+        private Builder() {
+        }
+
+        public static Builder newBuilder() {
+            return new Builder();
+        }
+
+        public Builder token(String token) {
+            this.token = token;
+            return this;
+        }
+
+        public Builder timeout(Duration timeout) {
+            this.timeout = timeout;
+            return this;
+        }
+
+        public GoogleBardClient build() {
+            if (token == null) {
+                throw new RuntimeException("Token must not be null");
+            }
+            return new GoogleBardClient(token, timeout);
+        }
     }
 }
