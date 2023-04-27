@@ -3,7 +3,7 @@
 
 `Google Bard` is Google's experimental, conversational, AI chat service. It is meant to function similarly to ChatGPT, with the biggest difference being that Google's service will pull its information from the web.
 
-I want to use `Google Bard` automatically in a easier way, so I built a Java library for it. The GitHub Link is: https://github.com/LarryDpk/Google-Bard
+I want to use `Google Bard` automatically in an easier way, so I built a Java library for it. The GitHub Link is: https://github.com/LarryDpk/Google-Bard
 
 
 ## How to use the library
@@ -15,7 +15,7 @@ For maven project:
     <dependency>
         <groupId>com.pkslow</groupId>
         <artifactId>google-bard</artifactId>
-        <version>0.0.3</version>
+        <version>0.0.4</version>
     </dependency>
 </dependencies>
 ```
