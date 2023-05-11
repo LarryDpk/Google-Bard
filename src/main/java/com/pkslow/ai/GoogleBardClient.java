@@ -148,7 +148,7 @@ public class GoogleBardClient implements AIClient {
         randonNum = randonNum + 100000;
 
         Map<String, String> params = new HashMap<>();
-        params.put("bl", "boq_assistant-bard-web-server_20230423.20_p0");
+        params.put("bl", "boq_assistant-bard-web-server_20230507.20_p2");
         params.put("_reqid", String.valueOf(randonNum));
         params.put("rt", "c");
         return params;
