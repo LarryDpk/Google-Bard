@@ -3,7 +3,7 @@
 
 `Google Bard` is Google's experimental, conversational, AI chat service. It is meant to function similarly to ChatGPT, with the biggest difference being that Google's service will pull its information from the web.
 
-I want to use `Google Bard` automatically in an easier way, so I built a Java library for it. The GitHub Link is: https://github.com/LarryDpk/Google-Bard
+I want to use `Google Bard` automatically in an easier way, so I built a Java library for it. The GitHub Link is: https://github.com/LarryDpk/Google-Bard, the library supports continuous conversation with the same client.
 
 
 ## How to use the library
@@ -15,7 +15,7 @@ For maven project:
     <dependency>
         <groupId>com.pkslow</groupId>
         <artifactId>google-bard</artifactId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
     </dependency>
 </dependencies>
 ```
@@ -54,57 +54,81 @@ if (answer.status() == AnswerStatus.OK) {
 }
 ```
 
-`Google Bard` is now under development, it's just available in US/UK, so you may set the proxy before you run the application:
+`Google Bard` is now under development so it may not be available for your country, so you may set the proxy before you run the application:
 ```java
 NetworkUtils.setUpProxy("localhost", "7890");
 ```
 
 
-## The answers Example
-It `Markdown` format for the answer, you can see the answers I got:
+## The Example
+The example Java code below:
+```java
+public class GoogleBardExample {
+    public static void main(String[] args) {
+        NetworkUtils.setUpProxy("localhost", "7890");
+        String token = args[0];
+        AIClient client = new GoogleBardClient(token, Duration.ofMinutes(10));
 
-### Chosen Answer
-Here are some tips on how to be a good father:
+        Answer answer = client.ask("What is the population of London?");
+        printChosenAnswer(answer);
 
-* **Spend time with your child.** Quality time is essential for building a strong relationship with your child. Make time for activities that you both enjoy, such as playing games, going to the park, or reading stories.
-* **Be a good role model.** Children learn by watching the adults in their lives. Set a good example by being honest, kind, and respectful.
-* **Be supportive.** Let your child know that you are there for them, no matter what. Offer them your support and encouragement, especially when they are going through tough times.
-* **Be a good communicator.** Talk to your child about their day, their feelings, and their hopes and dreams. Let them know that they can come to you with anything.
-* **Be patient.** Parenting is a journey, not a destination. There will be times when you feel frustrated or overwhelmed. Remember to be patient with yourself and your child.
-* **Be loving.** The most important thing a father can do is to love his child unconditionally. Let your child know that you love them every day.
+        answer = client.ask("How about Beijing?");
+        printChosenAnswer(answer);
 
-Being a good father is a lifelong journey. There is no one right way to do it. Just remember to be there for your child, be a good role model, and show them love.
-### Draft Answer 0
-Here are some tips on how to be a good father:
+        answer = client.ask("How about Hong Kong?");
+        printChosenAnswer(answer);
+    }
+    
+    private static void printChosenAnswer(Answer answer) {
+        StringBuilder sb = new StringBuilder();
+        if (answer.status() == AnswerStatus.OK) {
+            sb.append("\n### Chosen Answer\n");
+            sb.append(answer.chosenAnswer());
+            log.info("Output: \n {}", sb);
+        }
+    }
+}
+```
 
-* **Spend time with your child.** Quality time is essential for building a strong relationship with your child. Make time for activities that you both enjoy, such as playing games, going to the park, or reading stories.
-* **Be a good role model.** Children learn by watching the adults in their lives. Set a good example by being honest, kind, and respectful.
-* **Be supportive.** Let your child know that you are there for them, no matter what. Offer them your support and encouragement, especially when they are going through tough times.
-* **Be a good communicator.** Talk to your child about their day, their feelings, and their hopes and dreams. Let them know that they can come to you with anything.
-* **Be patient.** Parenting is a journey, not a destination. There will be times when you feel frustrated or overwhelmed. Remember to be patient with yourself and your child.
-* **Be loving.** The most important thing a father can do is to love his child unconditionally. Let your child know that you love them every day.
 
-Being a good father is a lifelong journey. There is no one right way to do it. Just remember to be there for your child, be a good role model, and show them love.
-### Draft Answer 1
-Here are some tips on how to be a good father:
+It's `Markdown` format for the answer, you can see the answers I got:
 
-* **Spend time with your children.** Make time for them, even if it's just for a few minutes each day. Talk to them, listen to them, and play with them.
-* **Discipline with love and positive parenting.** Set rules and boundaries, but be fair and consistent. Use positive reinforcement, such as praise and rewards, to encourage good behavior.
-* **Be your child's role model.** Show them what it means to be a good person by being honest, trustworthy, and kind.
-* **Earn the right to be heard.** Be a good listener and take your children's concerns seriously. When you give them advice, make sure it's based on your own experience and wisdom.
-* **Be your child's teacher.** Teach them about the world around them and help them to grow into responsible, independent adults.
-* **Be there for your children, no matter what.** Love them unconditionally and support them through thick and thin.
 
-Being a good father is a lifelong journey. There will be times when you make mistakes, but that's okay. The important thing is to learn from your mistakes and keep trying to be the best father you can be.
-### Draft Answer 2
-Here are some tips on how to be a good father:
+### What is the population of London?
+The population of London is 8,799,800 as of 2021. This makes it the most populous city in the United Kingdom and the ninth most populous city in Europe. London is also a global city, with a significant impact on the world economy, culture, and politics.
 
-* **Spend time with your child.** This is one of the most important things you can do as a father. Make time for your child every day, even if it's just for a few minutes. Play with them, read to them, or just talk to them.
-* **Discipline with love and positive parenting.** Discipline is important, but it should be done in a loving and positive way. Avoid yelling or hitting your child. Instead, try to explain why they are being disciplined and what they can do to avoid being disciplined in the future.
-* **Be your child's role model.** Children learn by watching the adults in their lives. Show your child what it means to be a good person by being someone they can look up to.
-* **Earn the right to be heard.** Children are more likely to listen to their parents if they respect them. Earn your child's respect by being a good role model and by being fair and consistent with your discipline.
-* **Be your child's teacher.** Teach your child about right and wrong and encourage them to do their best. Use everyday examples to help them learn the basic lessons of life.
-* **Be there for your child.** Your child needs to know that you are there for them, no matter what. Be supportive and loving, and let them know that you will always be there for them.
+The population of London has been growing steadily for centuries. In the 18th century, the city's population was only about 1 million. However, it grew rapidly during the Industrial Revolution, as people flocked to the city in search of work. By the early 20th century, London's population had reached 7 million.
 
-Being a good father is one of the most important things you can do in life. By following these tips, you can help your child grow into a happy, healthy, and successful adult.
+The population of London continued to grow after World War II, but it has slowed in recent decades. This is due to a number of factors, including the rising cost of living and the decline of manufacturing jobs. However, London remains a popular destination for immigrants, and its population is expected to continue to grow in the coming years.
 
+### How about Beijing?
+The population of Beijing is 21,766,000 as of 2023. This makes it the most populous city in China and the second most populous city in the world. Beijing is also a global city, with a significant impact on the world economy, culture, and politics.
+
+The population of Beijing has been growing steadily for centuries. In the 18th century, the city's population was only about 1 million. However, it grew rapidly during the Qing dynasty, as people flocked to the city in search of work. By the early 20th century, Beijing's population had reached 5 million.
+
+The population of Beijing continued to grow after the founding of the People's Republic of China in 1949. However, it has slowed in recent decades due to a number of factors, including the rising cost of living and the decline of manufacturing jobs. However, Beijing remains a popular destination for immigrants, and its population is expected to continue to grow in the coming years.
+
+Here are some interesting facts about the population of Beijing:
+
+* The average age of a resident of Beijing is 34.
+* The majority of residents of Beijing are Han Chinese, with a small minority of other ethnic groups.
+* The most common religion in Beijing is Buddhism, followed by Taoism and Confucianism.
+* The official language of Beijing is Mandarin Chinese.
+* The most popular tourist attractions in Beijing include the Forbidden City, the Great Wall of China, and Tiananmen Square.
+
+### How about Hong Kong?
+As of 2023, the population of Hong Kong is 7,670,674. This makes it the most populous city in Hong Kong Special Administrative Region (HKSAR) of the People's Republic of China and the 104th most populous city in the world. The population density of Hong Kong is 7,140 per Km2 (18,492 people per mi2), making it one of the most densely populated places in the world.
+
+The majority of the population of Hong Kong is Han Chinese, with a small minority of other ethnic groups, including the indigenous people of Hong Kong, the Tanka. The most common language spoken in Hong Kong is Cantonese, followed by Mandarin Chinese. The official languages of Hong Kong are English and Chinese.
+
+The population of Hong Kong has been growing steadily for centuries. In the 18th century, the city's population was only about 100,000. However, it grew rapidly during the British colonial period, as people flocked to the city in search of work. By the early 20th century, Hong Kong's population had reached 1 million.
+
+The population of Hong Kong continued to grow after the handover of Hong Kong to China in 1997. However, it has slowed in recent decades due to a number of factors, including the rising cost of living and the decline of manufacturing jobs. However, Hong Kong remains a popular destination for immigrants, and its population is expected to continue to grow in the coming years.
+
+Here are some interesting facts about the population of Hong Kong:
+
+* The average age of a resident of Hong Kong is 44.8.
+* The majority of residents of Hong Kong are Han Chinese, with a small minority of other ethnic groups.
+* The most common religion in Hong Kong is Buddhism, followed by Taoism and Confucianism.
+* The official languages of Hong Kong are English and Chinese.
+* The most popular tourist attractions in Hong Kong include Victoria Harbour, the Peak, and the Temple Street Night Market.
