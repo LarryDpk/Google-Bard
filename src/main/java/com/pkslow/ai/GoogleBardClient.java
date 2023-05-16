@@ -23,6 +23,14 @@ public class GoogleBardClient implements AIClient {
 
     private final OkHttpClient client;
 
+    private String strSNlM0e;
+
+    private String conversationId = "";
+
+    private String responseId = "";
+
+    private String choiceId = "";
+
     public GoogleBardClient(String token) {
         this(token, Duration.ofMinutes(5));
     }
@@ -37,7 +45,11 @@ public class GoogleBardClient implements AIClient {
     public Answer ask(String question) {
         Answer answer;
         try {
-            String strSNlM0e = getSNlM0e();
+
+            if (isEmpty(strSNlM0e)) {
+                strSNlM0e = getSNlM0e();
+            }
+
             String response = ask(strSNlM0e, question);
             answer = processAskResult(response);
         } catch (Throwable e) {
@@ -60,12 +72,17 @@ public class GoogleBardClient implements AIClient {
 
         List<String> results = new ArrayList<>();
 
+        conversationId = ((JsonArray) jsonArray3.get(1)).get(0).getAsString();
+        responseId = ((JsonArray) jsonArray3.get(1)).get(1).getAsString();
+
         String chosenAnswer = ((JsonArray) jsonArray3.get(0)).get(0).getAsString();
         chosenAnswer = resultRender(chosenAnswer);
 
         Answer.AnswerBuilder builder = Answer.AnswerBuilder.anAnswer();
 
         builder.chosenAnswer(chosenAnswer);
+
+        choiceId = ((JsonArray) ((JsonArray) jsonArray3.get(4)).get(0)).get(0).getAsString();
 
         try {
             for (int i = 0; i < 3; i++) {
@@ -135,9 +152,10 @@ public class GoogleBardClient implements AIClient {
     }
 
     @NotNull
-    private static RequestBody requestBodyForAsk(String strSNlM0e, String question) {
+    private RequestBody requestBodyForAsk(String strSNlM0e, String question) {
         return new FormBody.Builder()
-                .add("f.req", "[null,\"[[\\\"" + question + "\\\"],null,[\\\"\\\",\\\"\\\",\\\"\\\"]]\"]")
+                .add("f.req", "[null,\"[[\\\"" + question + "\\\"],null," +
+                        "[\\\"" + conversationId + "\\\",\\\"" + responseId + "\\\",\\\"" + choiceId + "\\\"]]\"]")
                 .add("at", strSNlM0e)
                 .build();
     }
@@ -148,7 +166,7 @@ public class GoogleBardClient implements AIClient {
         randonNum = randonNum + 100000;
 
         Map<String, String> params = new HashMap<>();
-        params.put("bl", "boq_assistant-bard-web-server_20230507.20_p2");
+        params.put("bl", BARD_VERSION);
         params.put("_reqid", String.valueOf(randonNum));
         params.put("rt", "c");
         return params;
@@ -196,6 +214,10 @@ public class GoogleBardClient implements AIClient {
                 .addHeader("Origin", BASE_URL)
                 .addHeader("Referer", BASE_URL)
                 .addHeader("Cookie", TOKEN_COOKIE_NAME + "=" + token);
+    }
+
+    private static boolean isEmpty(String str) {
+        return str == null || str.length() == 0;
     }
 
 }

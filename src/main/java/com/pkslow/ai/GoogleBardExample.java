@@ -12,8 +12,19 @@ public class GoogleBardExample {
         String token = args[0];
         AIClient client = new GoogleBardClient(token, Duration.ofMinutes(10));
 
-        Answer answer = client.ask("how to be a good father?");
+        Answer answer = client.ask("What is the population of London?");
+        printChosenAnswer(answer);
 
+        answer = client.ask("How about Beijing?");
+        printChosenAnswer(answer);
+
+        answer = client.ask("How about Hong Kong?");
+        printChosenAnswer(answer);
+
+
+    }
+
+    private static void printAnswer(Answer answer) {
         StringBuilder sb = new StringBuilder();
 
         if (answer.status() == AnswerStatus.OK) {
@@ -25,6 +36,15 @@ public class GoogleBardExample {
             }
             log.info("Output: \n {}", sb);
         }
+    }
 
+    private static void printChosenAnswer(Answer answer) {
+        StringBuilder sb = new StringBuilder();
+
+        if (answer.status() == AnswerStatus.OK) {
+            sb.append("\n### Chosen Answer\n");
+            sb.append(answer.chosenAnswer());
+            log.info("Output: \n {}", sb);
+        }
     }
 }

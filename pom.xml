@@ -6,7 +6,7 @@
 
     <groupId>com.pkslow</groupId>
     <artifactId>google-bard</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.5</version>
     <packaging>jar</packaging>
 
     <name>Pkslow google-bard</name>
