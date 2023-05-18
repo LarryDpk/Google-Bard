@@ -27,6 +27,16 @@ public class GoogleBardExample {
 
     }
 
+    private static void printChosenAnswer(Answer answer) {
+        StringBuilder sb = new StringBuilder();
+
+        if (answer.status() == AnswerStatus.OK) {
+            sb.append("\n### Chosen Answer\n");
+            sb.append(answer.chosenAnswer());
+            log.info("Output: \n {}", sb);
+        }
+    }
+
     private static void printAnswer(Answer answer) {
         StringBuilder sb = new StringBuilder();
 
@@ -37,16 +47,6 @@ public class GoogleBardExample {
                 sb.append("\n### Draft Answer ").append(i).append("\n");
                 sb.append(answer.draftAnswers().get(i));
             }
-            log.info("Output: \n {}", sb);
-        }
-    }
-
-    private static void printChosenAnswer(Answer answer) {
-        StringBuilder sb = new StringBuilder();
-
-        if (answer.status() == AnswerStatus.OK) {
-            sb.append("\n### Chosen Answer\n");
-            sb.append(answer.chosenAnswer());
             log.info("Output: \n {}", sb);
         }
     }

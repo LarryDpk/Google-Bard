@@ -15,14 +15,10 @@ For maven project:
     <dependency>
         <groupId>com.pkslow</groupId>
         <artifactId>google-bard</artifactId>
-        <version>0.0.5</version>
+        <version>0.1.0</version>
     </dependency>
 </dependencies>
 ```
-
-### Get the token from browser
-We need to get the token from browser for authentication. It a cookie named `__Secure-1PSID`, and we need to copy the value.
-![](https://pkslow.oss-cn-shenzhen.aliyuncs.com/images/2023/03/google-bard-python-chatbot.sessionid.png)
 
 ### Java Code
 It's easy to make the call:
@@ -30,6 +26,11 @@ It's easy to make the call:
 AIClient client = new GoogleBardClient(token);
 Answer answer = client.ask("how to be a good father?");
 ```
+
+
+### Get the token from browser
+We need to get the token from browser for authentication. It a cookie named `__Secure-1PSID`, and we need to copy the value.
+![](https://pkslow.oss-cn-shenzhen.aliyuncs.com/images/2023/03/google-bard-python-chatbot.sessionid.png)
 
 
 
