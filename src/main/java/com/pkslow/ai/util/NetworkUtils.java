@@ -1,4 +1,4 @@
-package com.pkslow.ai;
+package com.pkslow.ai.util;
 
 public class NetworkUtils {
     public static void setUpProxy(String host, String port) {

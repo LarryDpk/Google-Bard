@@ -1,4 +1,4 @@
-package com.pkslow.ai;
+package com.pkslow.ai.domain;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.pkslow.ai;
+package com.pkslow.ai.util;
 
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;

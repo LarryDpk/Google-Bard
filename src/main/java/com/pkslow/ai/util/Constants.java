@@ -1,4 +1,4 @@
-package com.pkslow.ai;
+package com.pkslow.ai.util;
 
 public class Constants {
     public static final String HOSTNAME = "bard.google.com";
@@ -8,6 +8,7 @@ public class Constants {
     public static final String CONTENT_TYPE = "application/x-www-form-urlencoded;charset=UTF-8";
     public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36";
     public static final String TOKEN_COOKIE_NAME = "__Secure-1PSID";
-    public static final String BARD_VERSION = "boq_assistant-bard-web-server_20230510.09_p1";
+    public static final String BARD_VERSION = "boq_assistant-bard-web-server_20230514.20_p0";
 
+    public static final String EMPTY_STRING = "";
 }

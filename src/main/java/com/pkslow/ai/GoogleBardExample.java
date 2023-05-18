@@ -1,6 +1,9 @@
 package com.pkslow.ai;
 
 
+import com.pkslow.ai.domain.Answer;
+import com.pkslow.ai.domain.AnswerStatus;
+import com.pkslow.ai.util.NetworkUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
