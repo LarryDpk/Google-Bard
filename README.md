@@ -42,7 +42,7 @@ The chosen/recommended answer is the first one.
 
 ```java
 Assert.assertEquals(3, answer.draftAnswers().size());
-        Assert.assertEquals(answer.chosenAnswer(), answer.draftAnswers().get(0));
+Assert.assertEquals(answer.chosenAnswer(), answer.draftAnswers().get(0));
 ```
 
 `Google Bard` is now under development so it may not be available for your country, so you may set the proxy before you run the application:
