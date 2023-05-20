@@ -13,6 +13,7 @@ import java.util.*;
 
 import static com.pkslow.ai.domain.BardRequest.DEFAULT_REQUEST;
 import static com.pkslow.ai.util.BardUtils.*;
+import static com.pkslow.ai.util.Constants.EMPTY_STRING;
 import static com.pkslow.ai.util.WebUtils.okHttpClientWithTimeout;
 
 @Slf4j
@@ -61,6 +62,14 @@ public class GoogleBardClient implements AIClient {
         return answer;
     }
 
+    @Override
+    public void reset() {
+        bardRequest.setStrSNlM0e(EMPTY_STRING);
+        bardRequest.setConversationId(EMPTY_STRING);
+        bardRequest.setResponseId(EMPTY_STRING);
+        bardRequest.setChoiceId(EMPTY_STRING);
+    }
+
     private String callBardToGetSNlM0e() {
         Call call = this.httpClient.newCall(createRequestForSNlM0e(token));
         try {
@@ -90,7 +99,7 @@ public class GoogleBardClient implements AIClient {
                     throw new IllegalStateException("Can't get the answer");
                 }
                 String result = responseString.split("\\n")[3];
-                log.info("Result for ask: {}", result);
+                log.debug("Result for ask: {}", result);
                 log.debug("Raw answers length: {}", result.length());
 //            log.debug("Result from Bard: {}", result);
                 return result;

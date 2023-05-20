@@ -65,6 +65,7 @@ public class GoogleBardClientTest {
         // mvn run test with keep return sNlM0eCall, no idea
 //        when(httpClient.newCall(any(Request.class))).thenReturn(sNlM0eCall, answerCall);
 
+        // https://stackoverflow.com/questions/8088179/using-mockito-with-multiple-calls-to-the-same-method-with-the-same-arguments
         when(httpClient.newCall(any(Request.class))).thenAnswer(new org.mockito.stubbing.Answer<Call>() {
             private int count = 0;
 

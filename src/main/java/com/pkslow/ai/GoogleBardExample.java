@@ -21,9 +21,10 @@ public class GoogleBardExample {
         answer = client.ask("How about Beijing?");
         printChosenAnswer(answer);
 
+        client.reset();
+
         answer = client.ask("How about Hong Kong?");
         printChosenAnswer(answer);
-
 
     }
 
