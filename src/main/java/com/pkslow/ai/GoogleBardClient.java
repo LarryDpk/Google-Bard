@@ -90,6 +90,7 @@ public class GoogleBardClient implements AIClient {
                     throw new IllegalStateException("Can't get the answer");
                 }
                 String result = responseString.split("\\n")[3];
+                log.info("Result for ask: {}", result);
                 log.debug("Raw answers length: {}", result.length());
 //            log.debug("Result from Bard: {}", result);
                 return result;
