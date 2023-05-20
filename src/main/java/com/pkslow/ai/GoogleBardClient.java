@@ -33,6 +33,11 @@ public class GoogleBardClient implements AIClient {
         this.httpClient = okHttpClientWithTimeout(timeout);
     }
 
+    public GoogleBardClient(String token, OkHttpClient httpClient) {
+        this.token = token;
+        this.httpClient = httpClient;
+    }
+
 
     @Override
     public Answer ask(String question) {
@@ -96,7 +101,7 @@ public class GoogleBardClient implements AIClient {
     }
 
     private Answer processAskResult(String content) {
-        BardResponse bardResponse = createBardResponseFromResponse(content);
+        BardResponse bardResponse = renderBardResponseFromResponse(content);
 
         bardRequest.setConversationId(bardResponse.getConversationId());
         bardRequest.setResponseId(bardResponse.getResponseId());

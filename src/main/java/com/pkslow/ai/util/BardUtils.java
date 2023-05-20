@@ -103,7 +103,7 @@ public class BardUtils {
                 .build();
     }
 
-    public static BardResponse createBardResponseFromResponse(String content) {
+    public static BardResponse renderBardResponseFromResponse(String content) {
         JsonArray jsonArray = new Gson().fromJson(content, JsonArray.class);
 
         JsonElement element3 = ((JsonArray) jsonArray.get(0)).get(2);

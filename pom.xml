@@ -6,7 +6,7 @@
 
     <groupId>com.pkslow</groupId>
     <artifactId>google-bard</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Pkslow google-bard</name>
@@ -51,6 +51,19 @@
             <version>${lombok.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>pl.pojo</groupId>
+            <artifactId>pojo-tester</artifactId>
+            <version>0.7.6</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
 

@@ -84,11 +84,11 @@ public class BardRequest {
     @Override
     public String toString() {
         return "BardRequest{" +
-                "strSNlM0e='" + strSNlM0e + '\'' +
-                "question='" + question + '\'' +
-                ", conversationId='" + conversationId + '\'' +
-                ", responseId='" + responseId + '\'' +
-                ", choiceId='" + choiceId + '\'' +
+                "strSNlM0e=" + strSNlM0e +
+                ", question=" + question +
+                ", conversationId=" + conversationId +
+                ", responseId=" + responseId +
+                ", choiceId=" + choiceId +
                 '}';
     }
 }
