@@ -15,40 +15,22 @@ public class GoogleBardExample {
         String token = args[0];
         AIClient client = new GoogleBardClient(token, Duration.ofMinutes(10));
 
-        Answer answer = client.ask("What is the population of London?");
+        Answer answer = client.ask("can you show me a picture of clock?");
         printChosenAnswer(answer);
 
-        answer = client.ask("How about Beijing?");
-        printChosenAnswer(answer);
-
-        client.reset();
-
-        answer = client.ask("How about Hong Kong?");
-        printChosenAnswer(answer);
+        log.info("Markdown:\n{}", answer.markdown());
 
     }
 
     private static void printChosenAnswer(Answer answer) {
         StringBuilder sb = new StringBuilder();
 
-        if (answer.status() == AnswerStatus.OK) {
+        if (answer.getStatus() == AnswerStatus.OK) {
             sb.append("\n### Chosen Answer\n");
-            sb.append(answer.chosenAnswer());
+            sb.append(answer.getChosenAnswer());
             log.info("Output: \n {}", sb);
         }
     }
 
-    private static void printAnswer(Answer answer) {
-        StringBuilder sb = new StringBuilder();
 
-        if (answer.status() == AnswerStatus.OK) {
-            sb.append("\n### Chosen Answer\n");
-            sb.append(answer.chosenAnswer());
-            for (int i = 0; i < answer.draftAnswers().size(); i++) {
-                sb.append("\n### Draft Answer ").append(i).append("\n");
-                sb.append(answer.draftAnswers().get(i));
-            }
-            log.info("Output: \n {}", sb);
-        }
-    }
 }

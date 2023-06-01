@@ -104,46 +104,55 @@ public class BardUtils {
     }
 
     public static BardResponse renderBardResponseFromResponse(String content) {
-        JsonArray jsonArray = new Gson().fromJson(content, JsonArray.class);
-
-        JsonElement element3 = ((JsonArray) jsonArray.get(0)).get(2);
-        String content3 = element3.getAsString();
-
-        JsonArray jsonArray3 = new Gson().fromJson(content3, JsonArray.class);
-
-        List<String> results = new ArrayList<>();
-
-        String conversationId = ((JsonArray) jsonArray3.get(1)).get(0).getAsString();
-        String responseId = ((JsonArray) jsonArray3.get(1)).get(1).getAsString();
-
-        String chosenAnswer = ((JsonArray) jsonArray3.get(0)).get(0).getAsString();
-        chosenAnswer = removeBackslash(chosenAnswer);
-
-        Answer.AnswerBuilder builder = Answer.AnswerBuilder.anAnswer();
-
-        builder.chosenAnswer(chosenAnswer);
-
-        String choiceId = ((JsonArray) ((JsonArray) jsonArray3.get(4)).get(0)).get(0).getAsString();
-
+        Answer.AnswerBuilder builder = Answer.builder();
         Answer answer;
+        String conversationId = "";
+        String responseId = "";
+        String choiceId = "";
+
         try {
-            for (int i = 0; i < 3; i++) {
-                String oneDraftAnswer = ((JsonArray) ((JsonArray) jsonArray3.get(4)).get(i)).get(1).getAsString();
-                oneDraftAnswer = removeBackslash(oneDraftAnswer);
-                results.add(oneDraftAnswer);
+            JsonArray jsonArray = new Gson().fromJson(content, JsonArray.class);
+
+            JsonElement element3 = ((JsonArray) jsonArray.get(0)).get(2);
+            String content3 = element3.getAsString();
+
+            JsonArray jsonArray3 = new Gson().fromJson(content3, JsonArray.class);
+
+            conversationId = ((JsonArray) jsonArray3.get(1)).get(0).getAsString();
+            responseId = ((JsonArray) jsonArray3.get(1)).get(1).getAsString();
+
+            String chosenAnswer = ((JsonArray) jsonArray3.get(0)).get(0).getAsString();
+            chosenAnswer = removeBackslash(chosenAnswer);
+
+            builder.chosenAnswer(chosenAnswer);
+
+            choiceId = ((JsonArray) ((JsonArray) jsonArray3.get(4)).get(0)).get(0).getAsString();
+
+
+            try {
+                String imageURL = ((JsonArray) ((JsonArray) ((JsonArray) ((JsonArray) ((JsonArray) ((JsonArray) jsonArray3.get(4)).get(0)).get(4)).get(0)).get(3)).get(0)).get(0).getAsString();
+                String articleURL = ((JsonArray) ((JsonArray) ((JsonArray) ((JsonArray) ((JsonArray) ((JsonArray) jsonArray3.get(4)).get(0)).get(4)).get(0)).get(1)).get(0)).get(0).getAsString();
+                builder.imageURL(imageURL);
+                builder.articleURL(articleURL);
+            } catch (Exception e) {
+                log.info("No image");
             }
+
         } catch (Exception e) {
-            log.error("No right answer...");
             builder.status(AnswerStatus.NO_ANSWER);
             answer = builder.build();
             return new BardResponse(conversationId, responseId, choiceId, answer);
-
         }
-        builder.draftAnswers(results);
+
         builder.status(AnswerStatus.OK);
-
         answer = builder.build();
-
         return new BardResponse(conversationId, responseId, choiceId, answer);
     }
+
+
+    public static boolean isEmpty(String str) {
+        return str == null || str.length() == 0;
+    }
+
+
 }

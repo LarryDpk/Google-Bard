@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.*;
 
-import static com.pkslow.ai.domain.BardRequest.DEFAULT_REQUEST;
 import static com.pkslow.ai.util.BardUtils.*;
 import static com.pkslow.ai.util.Constants.EMPTY_STRING;
 import static com.pkslow.ai.util.WebUtils.okHttpClientWithTimeout;
@@ -22,7 +21,7 @@ public class GoogleBardClient implements AIClient {
 
     private final OkHttpClient httpClient;
 
-    private final BardRequest bardRequest = DEFAULT_REQUEST;
+    private final BardRequest bardRequest = BardRequest.newEmptyBardRequest();
 
 
     public GoogleBardClient(String token) {
@@ -54,8 +53,8 @@ public class GoogleBardClient implements AIClient {
             String response = callBardToAsk(bardRequest);
             answer = processAskResult(response);
         } catch (Throwable e) {
-            e.printStackTrace();
-            Answer.AnswerBuilder builder = Answer.AnswerBuilder.anAnswer();
+            log.error("Failed to get answer: ", e);
+            Answer.AnswerBuilder builder = Answer.builder();
             return builder.status(AnswerStatus.ERROR).build();
         }
 
@@ -120,9 +119,5 @@ public class GoogleBardClient implements AIClient {
         return bardResponse.getAnswer();
     }
 
-
-    private static boolean isEmpty(String str) {
-        return str == null || str.length() == 0;
-    }
 
 }

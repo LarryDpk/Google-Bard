@@ -7,7 +7,6 @@ import static com.pkslow.ai.util.Constants.EMPTY_STRING;
 
 public class BardRequest {
 
-    public static final BardRequest DEFAULT_REQUEST = new BardRequest(EMPTY_STRING, EMPTY_STRING, EMPTY_STRING, EMPTY_STRING, EMPTY_STRING);
 
     private String strSNlM0e;
 
@@ -90,5 +89,9 @@ public class BardRequest {
                 ", responseId=" + responseId +
                 ", choiceId=" + choiceId +
                 '}';
+    }
+
+    public static BardRequest newEmptyBardRequest() {
+        return new BardRequest(EMPTY_STRING, EMPTY_STRING, EMPTY_STRING, EMPTY_STRING, EMPTY_STRING);
     }
 }

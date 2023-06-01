@@ -35,13 +35,13 @@ public class GoogleBardClientTest {
     }
 
     @Test
-    public void ask() throws IOException {
+    public void askNoImage() throws IOException {
         OkHttpClient httpClient = mock(OkHttpClient.class);
         AIClient client = new GoogleBardClient("token", httpClient);
 
         ClassLoader classLoader = getClass().getClassLoader();
         File sNlM0eFile = new File(classLoader.getResource("sNlM0e-response-body.txt").getFile());
-        File answerFile = new File(classLoader.getResource("answer-body.json").getFile());
+        File answerFile = new File(classLoader.getResource("answer-response-body-no-image.json").getFile());
         String sNlM0eBody = Files.toString(sNlM0eFile, Charset.defaultCharset());
         String answerBody = Files.toString(answerFile, Charset.defaultCharset());
 
@@ -70,17 +70,73 @@ public class GoogleBardClientTest {
             private int count = 0;
 
             public Call answer(InvocationOnMock invocation) {
-                if (count++ == 1)
+                System.out.println("count: " + count);
+                if (count++ == 0) {
                     return sNlM0eCall;
+                } else {
+                    return answerCall;
+                }
 
-                return answerCall;
             }
         });
 
 
-        Answer answer = client.ask("what is the time now in Hong Kong?");
-        Assert.assertEquals(AnswerStatus.OK, answer.status());
-        Assert.assertTrue(answer.chosenAnswer().contains("The time in Hong Kong is currently 03:28 PM on Saturday"));
+        //verify(mockObject, times(3)).someMethod("was called exactly three times");
+
+        Answer answer = client.ask("How much is iPhone 14?");
+        verify(httpClient, times(2)).newCall(any(Request.class));
+        Assert.assertEquals(AnswerStatus.OK, answer.getStatus());
+        Assert.assertTrue(answer.getChosenAnswer().contains("The iPhone 14 starts at"));
+    }
+
+
+    @Test
+    public void askForImage() throws IOException {
+        OkHttpClient httpClient = mock(OkHttpClient.class);
+        AIClient client = new GoogleBardClient("token", httpClient);
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        File sNlM0eFile = new File(classLoader.getResource("sNlM0e-response-body.txt").getFile());
+        File answerFile = new File(classLoader.getResource("answer-response-body-with-image.json").getFile());
+        String sNlM0eBody = Files.toString(sNlM0eFile, Charset.defaultCharset());
+        String answerBody = Files.toString(answerFile, Charset.defaultCharset());
+
+
+        // sNlM0e part
+        Call sNlM0eCall = mock(Call.class);
+        Response sNlM0eResponse = mock(Response.class, RETURNS_DEEP_STUBS);
+        when(sNlM0eCall.execute()).thenReturn(sNlM0eResponse);
+        when(sNlM0eResponse.code()).thenReturn(200);
+        when(sNlM0eResponse.body().string()).thenReturn(sNlM0eBody);
+
+
+        // answer part
+        Call answerCall = mock(Call.class);
+        Response answerResponse = mock(Response.class, RETURNS_DEEP_STUBS);
+        when(answerCall.execute()).thenReturn(answerResponse);
+        when(answerResponse.code()).thenReturn(200);
+        when(answerResponse.body().string()).thenReturn(answerBody);
+
+        when(httpClient.newCall(any(Request.class))).thenAnswer(new org.mockito.stubbing.Answer<Call>() {
+            private int count = 0;
+
+            public Call answer(InvocationOnMock invocation) {
+                System.out.println("count: " + count);
+                if (count++ == 0) {
+                    return sNlM0eCall;
+                } else {
+                    return answerCall;
+                }
+            }
+        });
+
+
+        Answer answer = client.ask("can you show me a picture of Google?");
+        verify(httpClient, times(2)).newCall(any(Request.class));
+        Assert.assertEquals(AnswerStatus.OK, answer.getStatus());
+        Assert.assertTrue(answer.getChosenAnswer().contains("here is a picture of Google headquarters"));
+        Assert.assertTrue(answer.markdown().contains("here is a picture of Google headquarters"));
+
     }
 
 }

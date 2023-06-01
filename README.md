@@ -15,16 +15,18 @@ For maven project:
     <dependency>
         <groupId>com.pkslow</groupId>
         <artifactId>google-bard</artifactId>
-        <version>0.1.2</version>
+        <version>0.2.0</version>
     </dependency>
 </dependencies>
 ```
+
+- 0.2.0: Support images and it's not compatible with previous versions;
 
 ### Java Code
 It's easy to make the call:
 ```java
 AIClient client = new GoogleBardClient(token);
-Answer answer = client.ask("how to be a good father?");
+Answer answer = client.ask("can you show me a picture of clock?");
 ```
 
 
@@ -37,14 +39,6 @@ We need to get the token from browser for authentication. It a cookie named `__S
 [example code to use](https://github.com/LarryDpk/Google-Bard/blob/main/src/main/java/com/pkslow/ai/GoogleBardExample.java)
 
 
-If `Google Bard` can answer the question, it will return 3 answers.
-The chosen/recommended answer is the first one.
-
-```java
-Assert.assertEquals(3, answer.draftAnswers().size());
-Assert.assertEquals(answer.chosenAnswer(), answer.draftAnswers().get(0));
-```
-
 `Google Bard` is now under development so it may not be available for your country, so you may set the proxy before you run the application:
 ```java
 NetworkUtils.setUpProxy("localhost", "7890");
@@ -52,6 +46,13 @@ NetworkUtils.setUpProxy("localhost", "7890");
 
 
 It's `Markdown` format for the answer.
+---
+Sure, here is a picture of a clock.
+[Image of Clock]
+
+Do you want to see a picture of a specific type of clock? For example, a digital clock, an analog clock, or a grandfather clock?
+
+[![](https://play-lh.googleusercontent.com/OLkkt0y609LAuCyGnp5pPxEvZkbQ92U5BJXoR-VSexBrCFxGhxXF-R2pv8byLi2Frg)](https://play.google.com/store/apps/details?id=com.egert.clock&hl=zh_TW)
 
 ## Resources
 - [Amazing Bard Prompts](https://github.com/dsdanielpark/amazing-bard-prompts)

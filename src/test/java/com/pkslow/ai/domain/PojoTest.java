@@ -27,5 +27,12 @@ public class PojoTest {
 //                .testing(Method.HASH_CODE)
 //                .testing(Method.TO_STRING)
                 .areWellImplemented();
+
+        assertPojoMethodsForAll(Answer.class)
+                .quickly()
+                .testing(Method.CONSTRUCTOR)
+                .testing(Method.GETTER)
+                .testing(Method.TO_STRING)
+                .areWellImplemented();
     }
 }
