@@ -3,10 +3,7 @@ package com.pkslow.ai.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.pkslow.ai.domain.Answer;
-import com.pkslow.ai.domain.AnswerStatus;
-import com.pkslow.ai.domain.BardRequest;
-import com.pkslow.ai.domain.BardResponse;
+import com.pkslow.ai.domain.*;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
@@ -128,15 +125,29 @@ public class BardUtils {
 
             choiceId = ((JsonArray) ((JsonArray) jsonArray3.get(4)).get(0)).get(0).getAsString();
 
+            List<Image> images = new ArrayList<>();
+
 
             try {
-                String imageURL = ((JsonArray) ((JsonArray) ((JsonArray) ((JsonArray) ((JsonArray) ((JsonArray) jsonArray3.get(4)).get(0)).get(4)).get(0)).get(3)).get(0)).get(0).getAsString();
-                String articleURL = ((JsonArray) ((JsonArray) ((JsonArray) ((JsonArray) ((JsonArray) ((JsonArray) jsonArray3.get(4)).get(0)).get(4)).get(0)).get(1)).get(0)).get(0).getAsString();
-                builder.imageURL(imageURL);
-                builder.articleURL(articleURL);
+                JsonArray imagesJson = (JsonArray) (((JsonArray) ((JsonArray) jsonArray3.get(4)).get(0)).get(4));
+
+                for (int i = 0; i < imagesJson.size(); i++) {
+                    JsonArray imageJson = (JsonArray) imagesJson.get(i);
+                    String url = ((JsonArray)((JsonArray) imageJson.get(0)).get(0)).get(0).getAsString();
+                    String markdownLabel = imageJson.get(2).getAsString();
+                    String articleURL =  ((JsonArray)((JsonArray) imageJson.get(1)).get(0)).get(0).getAsString();
+
+                    Image image = new Image(url, markdownLabel, articleURL);
+//                    log.debug("Received image: {}", image);
+                    images.add(image);
+                }
+
             } catch (Exception e) {
                 log.info("No image");
             }
+
+
+            builder.images(images);
 
         } catch (Exception e) {
             builder.status(AnswerStatus.NO_ANSWER);

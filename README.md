@@ -15,7 +15,7 @@ For maven project:
     <dependency>
         <groupId>com.pkslow</groupId>
         <artifactId>google-bard</artifactId>
-        <version>0.2.0</version>
+        <version>0.3.0</version>
     </dependency>
 </dependencies>
 ```
@@ -47,13 +47,25 @@ NetworkUtils.setUpProxy("localhost", "7890");
 
 It's `Markdown` format for the answer.
 ---
-Sure, here is a picture of a clock.
-[Image of Clock]
+Sure thing. I found you a few photos of different types of clocks:
 
-Do you want to see a picture of a specific type of clock? For example, a digital clock, an analog clock, or a grandfather clock?
+* **Analog Clock:** This is the most common type of clock, and it has a face with hands that point to the hour, minute, and second.
 
-[![](https://play-lh.googleusercontent.com/OLkkt0y609LAuCyGnp5pPxEvZkbQ92U5BJXoR-VSexBrCFxGhxXF-R2pv8byLi2Frg)](https://play.google.com/store/apps/details?id=com.egert.clock&hl=zh_TW)
+[![Image of Analog clock](https://cdn.shopify.com/s/files/1/0556/8066/3742/products/4550344275733_org_1200x1200.jpg?v=1678206891)](https://www.muji.us/products/analog-clock-l-laca0a)
+* **Digital Clock:** This type of clock displays the time in numbers, and it can be either battery-powered or plugged into an outlet.
 
+[![Image of Digital clock](https://m.media-amazon.com/images/I/61MuSYQ7yhL._AC_UF894,1000_QL80_.jpg)](https://www.amazon.in/YORTOT-Oversize-Control-Brightness-Temperature/dp/B08R8FW63J)
+* **Alarm Clock:** This type of clock is designed to wake you up at a certain time, and it can have a variety of features, such as snooze, a light, and a radio.
+
+[![Image of Alarm clock](https://m.media-amazon.com/images/I/71ggBUmny9L.jpg)](https://www.amazon.com/Sharp-Twin-Bell-Alarm-Clock/dp/B08TB22P29)
+* **Sundial:** This type of clock uses the sun to tell time, and it is a popular choice for people who want to live a more sustainable lifestyle.
+
+[![Image of Sundial](https://www.thehoarde.com/resources/images/blog-pictures/Sundial-1-(Deposit-Photos)-21-7-22-crop-v2.jpg)](https://www.thehoarde.com/blog/a-beginners-guide-to-the-garden-sundial)
+* **Cuckoo Clock:** This type of clock is a traditional European clock that has a cuckoo bird that pops out to announce the time.
+
+[![Image of Cuckoo clock](https://m.media-amazon.com/images/I/81OBtQVTkuL._AC_UF894,1000_QL80_.jpg)](https://www.amazon.com/Trenkle-Quartz-Cuckoo-Forest-Chopper/dp/B00VZQ5ZTY)
+
+I hope this helps!
 ## Resources
 - [Amazing Bard Prompts](https://github.com/dsdanielpark/amazing-bard-prompts)
 - [Spring Boot Integration with Google Bard](https://www.pkslow.com/archives/spring-boot-google-bard)

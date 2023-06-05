@@ -15,20 +15,15 @@ public class GoogleBardExample {
         String token = args[0];
         AIClient client = new GoogleBardClient(token, Duration.ofMinutes(10));
 
-        Answer answer = client.ask("can you show me a picture of clock?");
-        printChosenAnswer(answer);
+        Answer answer = client.ask("can you show me some pictures of clock?");
 
-        log.info("Markdown:\n{}", answer.markdown());
+        printChosenAnswer(answer);
 
     }
 
     private static void printChosenAnswer(Answer answer) {
-        StringBuilder sb = new StringBuilder();
-
         if (answer.getStatus() == AnswerStatus.OK) {
-            sb.append("\n### Chosen Answer\n");
-            sb.append(answer.getChosenAnswer());
-            log.info("Output: \n {}", sb);
+            log.info("Markdown Output: \n {}", answer.markdown());
         }
     }
 

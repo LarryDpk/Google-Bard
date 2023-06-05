@@ -34,5 +34,12 @@ public class PojoTest {
                 .testing(Method.GETTER)
                 .testing(Method.TO_STRING)
                 .areWellImplemented();
+
+        assertPojoMethodsForAll(Image.class)
+                .quickly()
+                .testing(Method.CONSTRUCTOR)
+                .testing(Method.GETTER)
+                .testing(Method.TO_STRING)
+                .areWellImplemented();
     }
 }
