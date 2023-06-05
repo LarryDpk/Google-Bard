@@ -47,6 +47,7 @@ NetworkUtils.setUpProxy("localhost", "7890");
 
 It's `Markdown` format for the answer.
 ---
+```markdown
 Sure thing. I found you a few photos of different types of clocks:
 
 * **Analog Clock:** This is the most common type of clock, and it has a face with hands that point to the hour, minute, and second.
@@ -66,6 +67,8 @@ Sure thing. I found you a few photos of different types of clocks:
 [![Image of Cuckoo clock](https://m.media-amazon.com/images/I/81OBtQVTkuL._AC_UF894,1000_QL80_.jpg)](https://www.amazon.com/Trenkle-Quartz-Cuckoo-Forest-Chopper/dp/B00VZQ5ZTY)
 
 I hope this helps!
+```
+
 ## Resources
 - [Amazing Bard Prompts](https://github.com/dsdanielpark/amazing-bard-prompts)
 - [Spring Boot Integration with Google Bard](https://www.pkslow.com/archives/spring-boot-google-bard)
