@@ -93,9 +93,10 @@ public class BardUtils {
 
     @NotNull
     public static RequestBody buildRequestBodyForAsk(BardRequest bardRequest) {
+        String question = bardRequest.getQuestion().replace("\"", "\\\\\\\"");
         return new FormBody.Builder()
                 .add("f.req", String.format("[null,\"[[\\\"%s\\\"],null,[\\\"%s\\\",\\\"%s\\\",\\\"%s\\\"]]\"]",
-                        bardRequest.getQuestion(), bardRequest.getConversationId(), bardRequest.getResponseId(), bardRequest.getChoiceId()))
+                        question, bardRequest.getConversationId(), bardRequest.getResponseId(), bardRequest.getChoiceId()))
                 .add("at", bardRequest.getStrSNlM0e())
                 .build();
     }
