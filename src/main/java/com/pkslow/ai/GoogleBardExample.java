@@ -15,7 +15,7 @@ public class GoogleBardExample {
         String token = args[0];
         AIClient client = new GoogleBardClient(token, Duration.ofMinutes(10));
 
-        Answer answer = client.ask("What do you think of \"Apple Vision Pro\"?");
+        Answer answer = client.ask("Show me some pictures of \"Apple Vision Pro\"?");
 
         printChosenAnswer(answer);
 
