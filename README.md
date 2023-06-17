@@ -15,12 +15,12 @@ For maven project:
     <dependency>
         <groupId>com.pkslow</groupId>
         <artifactId>google-bard</artifactId>
-        <version>0.3.1</version>
+        <version>0.3.2</version>
     </dependency>
 </dependencies>
 ```
 
-- 0.2.0: Support images and it's not compatible with previous versions;
+- 0.2.0+: Support images and it's not compatible with previous versions;
 
 ### Java Code
 It's easy to make the call:
