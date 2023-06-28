@@ -114,23 +114,23 @@ public class BardUtils {
             JsonElement element3 = ((JsonArray) jsonArray.get(0)).get(2);
             String content3 = element3.getAsString();
 
-            JsonArray jsonArray3 = new Gson().fromJson(content3, JsonArray.class);
+            JsonArray chatData = new Gson().fromJson(content3, JsonArray.class);
 
-            conversationId = ((JsonArray) jsonArray3.get(1)).get(0).getAsString();
-            responseId = ((JsonArray) jsonArray3.get(1)).get(1).getAsString();
+            conversationId = ((JsonArray) chatData.get(1)).get(0).getAsString();
+            responseId = ((JsonArray) chatData.get(1)).get(1).getAsString();
 
-            String chosenAnswer = ((JsonArray) jsonArray3.get(0)).get(0).getAsString();
+            String chosenAnswer = ((JsonArray) ((JsonArray) chatData.get(4)).get(0)).get(1).getAsString();
             chosenAnswer = removeBackslash(chosenAnswer);
 
             builder.chosenAnswer(chosenAnswer);
 
-            choiceId = ((JsonArray) ((JsonArray) jsonArray3.get(4)).get(0)).get(0).getAsString();
+            choiceId = ((JsonArray) ((JsonArray) chatData.get(4)).get(0)).get(0).getAsString();
 
             List<Image> images = new ArrayList<>();
 
 
             try {
-                JsonArray imagesJson = (JsonArray) (((JsonArray) ((JsonArray) jsonArray3.get(4)).get(0)).get(4));
+                JsonArray imagesJson = (JsonArray) (((JsonArray) ((JsonArray) chatData.get(4)).get(0)).get(4));
 
                 for (int i = 0; i < imagesJson.size(); i++) {
                     JsonArray imageJson = (JsonArray) imagesJson.get(i);

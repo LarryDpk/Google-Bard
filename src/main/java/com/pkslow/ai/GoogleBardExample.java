@@ -15,7 +15,7 @@ public class GoogleBardExample {
         String token = args[0];
         AIClient client = new GoogleBardClient(token, Duration.ofMinutes(10));
 
-        Answer answer = client.ask("Show me some pictures of \"Apple Vision Pro\"?");
+        Answer answer = client.ask("What is the date today?");
 
         printChosenAnswer(answer);
 
@@ -24,6 +24,8 @@ public class GoogleBardExample {
     private static void printChosenAnswer(Answer answer) {
         if (answer.getStatus() == AnswerStatus.OK) {
             log.info("Markdown Output: \n {}", answer.markdown());
+        } else {
+            log.info("No Answer: {}", answer);
         }
     }
 

@@ -41,10 +41,10 @@ public class GoogleBardClientTest {
 
         prepareMockForAsk("answer-response-body-no-image.json", httpClient);
 
-        Answer answer = client.ask("How much is iPhone 14?");
+        Answer answer = client.ask("What is the date today?");
         verify(httpClient, times(2)).newCall(any(Request.class));
         Assert.assertEquals(AnswerStatus.OK, answer.getStatus());
-        Assert.assertTrue(answer.getChosenAnswer().contains("The iPhone 14 starts at"));
+        Assert.assertTrue(answer.getChosenAnswer().contains("As of today, June 28, 2023, it is Wednesday."));
     }
 
 
