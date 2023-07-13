@@ -34,6 +34,14 @@ Answer answer = client.ask("can you show me a picture of clock?");
 We need to get the token from browser for authentication. It a cookie named `__Secure-1PSID`, and we need to copy the value.
 ![](https://pkslow.oss-cn-shenzhen.aliyuncs.com/images/2023/03/google-bard-python-chatbot.sessionid.png)
 
+## SNlM0e is null
+If you hit SNlM0e is null issues, you may need to clear the cookie and login again:
+
+- Clear cookies of bard.google.com and again
+- login into the account
+- F12 > Applications > Cookies > bard > __Secure-1PSID
+- Copy cookie and paste into your code.
+- Re run and you are good to go.
 
 ## The Example
 [example code to use](https://github.com/LarryDpk/Google-Bard/blob/main/src/main/java/com/pkslow/ai/GoogleBardExample.java)
