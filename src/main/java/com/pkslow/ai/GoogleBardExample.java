@@ -15,7 +15,7 @@ public class GoogleBardExample {
         String token = args[0];
         AIClient client = new GoogleBardClient(token, Duration.ofMinutes(10));
 
-        Answer answer = client.ask("What is the date today?");
+        Answer answer = client.ask("今天是几号？");
 
         printChosenAnswer(answer);
 
