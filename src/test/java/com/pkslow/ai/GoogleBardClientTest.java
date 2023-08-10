@@ -21,6 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class GoogleBardClientTest {
+    private static final String TOKEN = "xxx.xxx.token1;xxx.xxx.token2";
     @Test
     public void constructor() {
         AIClient client = new GoogleBardClient("token");
@@ -37,7 +38,7 @@ public class GoogleBardClientTest {
     @Test
     public void askNoImage() throws IOException {
         OkHttpClient httpClient = mock(OkHttpClient.class);
-        AIClient client = new GoogleBardClient("token", httpClient);
+        AIClient client = new GoogleBardClient(TOKEN, httpClient);
 
         prepareMockForAsk("answer-response-body-no-image.json", httpClient);
 
@@ -51,7 +52,7 @@ public class GoogleBardClientTest {
     @Test
     public void askForImage() throws IOException {
         OkHttpClient httpClient = mock(OkHttpClient.class);
-        AIClient client = new GoogleBardClient("token", httpClient);
+        AIClient client = new GoogleBardClient(TOKEN, httpClient);
 
         prepareMockForAsk("answer-response-body-with-image.json", httpClient);
 
@@ -67,7 +68,7 @@ public class GoogleBardClientTest {
     @Test
     public void askForMultipleImages() throws IOException {
         OkHttpClient httpClient = mock(OkHttpClient.class);
-        AIClient client = new GoogleBardClient("token", httpClient);
+        AIClient client = new GoogleBardClient(TOKEN, httpClient);
 
         prepareMockForAsk("answer-response-body-multiple-images.json", httpClient);
 

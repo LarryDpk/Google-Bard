@@ -39,7 +39,11 @@ public class GoogleBardClient implements AIClient {
     public Answer ask(String question) {
         try {
             if (isEmpty(bardRequest.getStrSNlM0e())) {
-                bardRequest.setStrSNlM0e(callBardToGetSNlM0e());
+                String strSNlM0e = callBardToGetSNlM0e();
+                if (isEmpty(strSNlM0e)) {
+                    throw new RuntimeException("Failed to get SNlM0e, it may be token issue");
+                }
+                bardRequest.setStrSNlM0e(strSNlM0e);
             }
 
             bardRequest.setQuestion(question);
