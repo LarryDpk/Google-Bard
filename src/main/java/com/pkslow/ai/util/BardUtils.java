@@ -22,6 +22,12 @@ import static com.pkslow.ai.util.Constants.*;
 public class BardUtils {
 
     public static Request.Builder createBuilderWithBardHeader(String token) {
+        String[] tokens = token.split(";");
+        if (tokens.length < 2) {
+            throw new RuntimeException("Please provide the correct token:" + TOKEN_COOKIE_1PSID + ";" + TOKEN_COOKIE_1PSIDTS);
+        }
+        String token1PSID = tokens[0];
+        String token1PSIDTS = tokens[1];
         return new Request.Builder()
                 .addHeader("Host", HOSTNAME)
                 .addHeader("Content-Type", CONTENT_TYPE)
@@ -29,7 +35,9 @@ public class BardUtils {
                 .addHeader("User-Agent", USER_AGENT)
                 .addHeader("Origin", BASE_URL)
                 .addHeader("Referer", BASE_URL)
-                .addHeader("Cookie", TOKEN_COOKIE_NAME + "=" + token);
+                .addHeader("Cookie", TOKEN_COOKIE_1PSID + "=" + token1PSID
+                        + ";" + TOKEN_COOKIE_1PSIDTS +
+                        "=" + token1PSIDTS);
     }
 
     public static Request createRequestForSNlM0e(String token) {
@@ -159,7 +167,7 @@ public class BardUtils {
 
         JsonArray imagesJson = (JsonArray) (((JsonArray) ((JsonArray) chatData.get(4)).get(0)).get(4));
 
-        for (JsonElement jsonElement: imagesJson) {
+        for (JsonElement jsonElement : imagesJson) {
             JsonArray imageJson = (JsonArray) jsonElement;
 
             String url = ((JsonArray) ((JsonArray) imageJson.get(0)).get(0)).get(0).getAsString();

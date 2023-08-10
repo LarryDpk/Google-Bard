@@ -22,6 +22,7 @@ For maven project:
 
 - 0.2.0+: Support images and it's not compatible with previous versions;
 - 0.3.4+: Support Chinese;
+- 0.3.5+: need two token: `__Secure-1PSID` and `__Secure-1PSIDTS`
 
 ### Java Code
 It's easy to make the call:
@@ -32,7 +33,14 @@ Answer answer = client.ask("can you show me a picture of clock?");
 
 
 ### Get the token from browser
-We need to get the token from browser for authentication. It a cookie named `__Secure-1PSID`, and we need to copy the value.
+We need to get the token from browser for authentication. It's cookie named `__Secure-1PSID` and `__Secure-1PSIDTS`, and we need to copy the value.
+Combine the two token as `$__Secure-1PSID;$__Secure-1PSIDTS`
+
+Example:
+```
+ZAiXYL4nedulA03ly0Ea2IdDTk2Emg4YJfuqs3YCcdxxxxxxxxx3XyDzlRqexw.;sidts-CjIBSAxbGXMW7bfOuuE0LOf-DDy20302Dh-npVoG**********86bhkxFwCw4QuaDyz1BAA
+```
+
 ![](https://pkslow.oss-cn-shenzhen.aliyuncs.com/images/2023/03/google-bard-python-chatbot.sessionid.png)
 
 ## SNlM0e is null
@@ -40,7 +48,7 @@ If you hit SNlM0e is null issues, you may need to clear the cookie and login aga
 
 - Clear cookies of bard.google.com and again
 - login into the account
-- F12 > Applications > Cookies > bard > __Secure-1PSID
+- F12 > Applications > Cookies > bard > `__Secure-1PSID` and `__Secure-1PSIDTS`
 - Copy cookie and paste into your code.
 - Re run and you are good to go.
 

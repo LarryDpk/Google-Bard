@@ -15,7 +15,7 @@ import static com.pkslow.ai.util.Constants.BARD_VERSION;
 import static com.pkslow.ai.util.Constants.HOSTNAME;
 
 public class BardUtilsTest {
-    private final String token = "xxx.xxx.token";
+    private final String token = "xxx.xxx.token1;xxx.xxx.token2";
     @Test
     public void createBuilderWithBardHeader() {
         Request.Builder builder = BardUtils.createBuilderWithBardHeader(token);
