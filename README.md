@@ -3,7 +3,7 @@
 
 `Google Bard` is Google's experimental, conversational, AI chat service. It is meant to function similarly to ChatGPT, with the biggest difference being that Google's service will pull its information from the web.
 
-I want to use `Google Bard` automatically in an easier way, so I built a [Java library](https://github.com/LarryDpk/Google-Bard) for it. Tthe library supports continuous conversation with the same client.
+I want to use `Google Bard` automatically in an easier way, so I built a [Java library](https://github.com/LarryDpk/Google-Bard) for it. The library supports continuous conversation with the same client.
 
 
 ## How to use the library

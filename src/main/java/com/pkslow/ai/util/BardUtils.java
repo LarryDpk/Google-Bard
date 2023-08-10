@@ -39,35 +39,35 @@ public class BardUtils {
     }
 
     public static String fetchSNlM0eFromBody(String input) {
-        Pattern p = Pattern.compile("SNlM0e\":\"(.*?)\"");
-        Matcher m = p.matcher(input);
-        if (m.find()) {
-            String result = m.group();
-            result = result.substring(9, result.length() - 1);
-            return result;
+        Matcher matcher = Pattern.compile("SNlM0e\":\"(.*?)\"").matcher(input);
+        if (matcher.find()) {
+            String result = matcher.group();
+            return result.substring(9, result.length() - 1);
         }
         return null;
     }
 
     @NotNull
     public static Map<String, String> genQueryStringParamsForAsk() {
-        int randonNum = ThreadLocalRandom.current().nextInt(0, 10000);
-        randonNum = randonNum + 100000;
+        int randomNumber = ThreadLocalRandom.current().nextInt(0, 10000) + 100000;
 
         Map<String, String> params = new HashMap<>();
         params.put("bl", BARD_VERSION);
-        params.put("_reqid", String.valueOf(randonNum));
+        params.put("_reqid", String.valueOf(randomNumber));
         params.put("rt", "c");
         return params;
     }
 
     @NotNull
     public static HttpUrl.Builder createHttpBuilderForAsk() {
-        Map<String, String> params = genQueryStringParamsForAsk();
-        HttpUrl.Builder httpBuilder = Objects.requireNonNull(HttpUrl.parse(BASE_URL + ASK_QUESTION_PATH)).newBuilder();
-        for (Map.Entry<String, String> param : params.entrySet()) {
+        HttpUrl.Builder httpBuilder = Objects
+                .requireNonNull(HttpUrl.parse(BASE_URL + ASK_QUESTION_PATH))
+                .newBuilder();
+
+        for (Map.Entry<String, String> param : genQueryStringParamsForAsk().entrySet()) {
             httpBuilder.addQueryParameter(param.getKey(), param.getValue());
         }
+
         return httpBuilder;
     }
 
@@ -75,21 +75,18 @@ public class BardUtils {
      * remove backslash \ in answer string
      */
     public static String removeBackslash(String answerStr) {
-        answerStr = answerStr.replace("\\\\n", "\n");
-        answerStr = answerStr.replace("\\", "\"");
-        return answerStr;
+        return answerStr
+                .replace("\\\\n", "\n")
+                .replace("\\", "\"");
     }
 
     @NotNull
     public static Request createPostRequestForAsk(String token, BardRequest bardRequest) {
-        HttpUrl.Builder httpBuilder = createHttpBuilderForAsk();
-        RequestBody body = buildRequestBodyForAsk(bardRequest);
-        Request.Builder headerBuilder = createBuilderWithBardHeader(token);
-        return headerBuilder.url(httpBuilder.build())
-                .method("POST", body)
+        return createBuilderWithBardHeader(token)
+                .url(createHttpBuilderForAsk().build())
+                .method("POST", buildRequestBodyForAsk(bardRequest))
                 .build();
     }
-
 
     @NotNull
     public static RequestBody buildRequestBodyForAsk(BardRequest bardRequest) {
@@ -103,68 +100,76 @@ public class BardUtils {
 
     public static BardResponse renderBardResponseFromResponse(String content) {
         Answer.AnswerBuilder builder = Answer.builder();
-        Answer answer;
         String conversationId = "";
         String responseId = "";
         String choiceId = "";
 
         try {
-            JsonArray jsonArray = new Gson().fromJson(content, JsonArray.class);
+            JsonArray chatData = getChatData(content);
 
-            JsonElement element3 = ((JsonArray) jsonArray.get(0)).get(2);
-            String content3 = element3.getAsString();
-
-            JsonArray chatData = new Gson().fromJson(content3, JsonArray.class);
+            builder.chosenAnswer(getChosenAnswer(chatData));
 
             conversationId = ((JsonArray) chatData.get(1)).get(0).getAsString();
             responseId = ((JsonArray) chatData.get(1)).get(1).getAsString();
-
-            String chosenAnswer = ((JsonArray) ((JsonArray) chatData.get(4)).get(0)).get(1).getAsString();
-            chosenAnswer = removeBackslash(chosenAnswer);
-
-            builder.chosenAnswer(chosenAnswer);
-
             choiceId = ((JsonArray) ((JsonArray) chatData.get(4)).get(0)).get(0).getAsString();
 
             List<Image> images = new ArrayList<>();
 
-
             try {
-                JsonArray imagesJson = (JsonArray) (((JsonArray) ((JsonArray) chatData.get(4)).get(0)).get(4));
-
-                for (int i = 0; i < imagesJson.size(); i++) {
-                    JsonArray imageJson = (JsonArray) imagesJson.get(i);
-                    String url = ((JsonArray)((JsonArray) imageJson.get(0)).get(0)).get(0).getAsString();
-                    String markdownLabel = imageJson.get(2).getAsString();
-                    String articleURL =  ((JsonArray)((JsonArray) imageJson.get(1)).get(0)).get(0).getAsString();
-
-                    Image image = new Image(url, markdownLabel, articleURL);
-//                    log.debug("Received image: {}", image);
-                    images.add(image);
-                }
-
+                images = getImages(chatData);
             } catch (Exception e) {
                 log.info("No image");
             }
 
-
             builder.images(images);
 
+            return new BardResponse(
+                    conversationId,
+                    responseId,
+                    choiceId,
+                    builder.status(AnswerStatus.OK).build()
+            );
+
         } catch (Exception e) {
-            builder.status(AnswerStatus.NO_ANSWER);
-            answer = builder.build();
-            return new BardResponse(conversationId, responseId, choiceId, answer);
+            return new BardResponse(
+                    conversationId,
+                    responseId,
+                    choiceId,
+                    builder.status(AnswerStatus.NO_ANSWER).build()
+            );
         }
-
-        builder.status(AnswerStatus.OK);
-        answer = builder.build();
-        return new BardResponse(conversationId, responseId, choiceId, answer);
     }
-
 
     public static boolean isEmpty(String str) {
         return str == null || str.length() == 0;
     }
 
+    private static JsonArray getChatData(String content) {
+        JsonArray contentJsonArray = new Gson().fromJson(content, JsonArray.class);
+        String element3content = ((JsonArray) contentJsonArray.get(0)).get(2).getAsString();
+        return new Gson().fromJson(element3content, JsonArray.class);
+    }
 
+    private static String getChosenAnswer(JsonArray chatData) {
+        return removeBackslash(((JsonArray) ((JsonArray) chatData.get(4)).get(0)).get(1).getAsString());
+    }
+
+    private static List<Image> getImages(JsonArray chatData) {
+        List<Image> images = new ArrayList<>();
+
+        JsonArray imagesJson = (JsonArray) (((JsonArray) ((JsonArray) chatData.get(4)).get(0)).get(4));
+
+        for (JsonElement jsonElement: imagesJson) {
+            JsonArray imageJson = (JsonArray) jsonElement;
+
+            String url = ((JsonArray) ((JsonArray) imageJson.get(0)).get(0)).get(0).getAsString();
+            String markdownLabel = imageJson.get(2).getAsString();
+            String articleURL = ((JsonArray) ((JsonArray) imageJson.get(1)).get(0)).get(0).getAsString();
+
+            Image image = new Image(url, markdownLabel, articleURL);
+            images.add(image);
+        }
+
+        return images;
+    }
 }

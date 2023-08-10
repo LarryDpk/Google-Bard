@@ -1,6 +1,5 @@
 package com.pkslow.ai;
 
-
 import com.pkslow.ai.domain.Answer;
 import com.pkslow.ai.domain.AnswerStatus;
 import com.pkslow.ai.util.NetworkUtils;
@@ -15,10 +14,7 @@ public class GoogleBardExample {
         String token = args[0];
         AIClient client = new GoogleBardClient(token, Duration.ofMinutes(10));
 
-        Answer answer = client.ask("今天是几号？");
-
-        printChosenAnswer(answer);
-
+        printChosenAnswer(client.ask("今天是几号？"));
     }
 
     private static void printChosenAnswer(Answer answer) {
@@ -28,6 +24,4 @@ public class GoogleBardExample {
             log.info("No Answer: {}", answer);
         }
     }
-
-
 }
