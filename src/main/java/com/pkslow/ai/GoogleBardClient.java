@@ -37,6 +37,10 @@ public class GoogleBardClient implements AIClient {
 
     @Override
     public Answer ask(String question) {
+
+        //Fix for multiline HTTP requests
+        question = question.replaceAll("\\s+"," ");
+        
         try {
             if (isEmpty(bardRequest.getStrSNlM0e())) {
                 String strSNlM0e = callBardToGetSNlM0e();
