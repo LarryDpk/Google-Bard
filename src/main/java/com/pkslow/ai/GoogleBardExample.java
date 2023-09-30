@@ -14,7 +14,7 @@ public class GoogleBardExample {
         String token = args[0];
         AIClient client = new GoogleBardClient(token, Duration.ofMinutes(10));
 
-        printChosenAnswer(client.ask("今天是几号？"));
+        printChosenAnswer(client.ask("Can you show me a picture of Pumpkin?\n How about cat?"));
     }
 
     private static void printChosenAnswer(Answer answer) {

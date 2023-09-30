@@ -15,7 +15,7 @@ For maven project:
     <dependency>
         <groupId>com.pkslow</groupId>
         <artifactId>google-bard</artifactId>
-        <version>0.3.5</version>
+        <version>0.3.6</version>
     </dependency>
 </dependencies>
 ```
@@ -23,6 +23,7 @@ For maven project:
 - 0.2.0+: Support images and it's not compatible with previous versions;
 - 0.3.4+: Support Chinese;
 - 0.3.5+: need two token: `__Secure-1PSID` and `__Secure-1PSIDTS`
+- 0.3.6: Support multiple lines by [Tolunay](https://github.com/TolunayM) (Jar not ready in Sonatype due to 502 Bad Gateway issue)
 
 ### Java Code
 It's easy to make the call:
