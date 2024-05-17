@@ -1,4 +1,8 @@
 
+# Note: Archived as Google changes Bard to Gemini
+
+
+
 # Java Library for Google Bard to Ask Questions and Receive Answers
 
 `Google Bard` is Google's experimental, conversational, AI chat service. It is meant to function similarly to ChatGPT, with the biggest difference being that Google's service will pull its information from the web.
